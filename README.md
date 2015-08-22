@@ -8,5 +8,3 @@ To do:
 + write a plotting script in julia
 + make a version in which the function runs in parallel for different beta
 + make a version with multiple parallel runs at the same beta
-
-(minor change, only to see how branches work)
