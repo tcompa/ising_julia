@@ -1,23 +1,23 @@
-# program:     ising_mc.jl
-# author:      tc
-# created:     2015-10-20 -- 8:30 CEST
-# description: implements a local Metropolis sampling for the two-dimensional
-#              Ising model
+# program:       ising_mc.jl
+# author:        tc
+# created:       2015-10-20 -- 8:30 CEST
+# last-modified: 2015-10-22 -- 18:30 CEST
+# description:   implements a local Metropolis sampling for the two-dimensional
+#                Ising model
 
 
 # construct the neighbors table
-function init_nbr(L::Int)
-    N = L^2::Int
-    dict = Dict{Int, Array}()
-    l_nbr = Array(Int, 4)
+function init_nbr(L :: Int)
+    N = L^2 :: Int
+    nbr = Array{Int, 2}
+    nbr = zeros(Int, (N, 4))
     for site = 0:N-1
-        l_nbr[1] = div(site, L) * L + mod(site + 1, L) + 1
-        l_nbr[2] = mod(site + L, N) + 1
-        l_nbr[3] = div(site, L) * L + mod(site - 1, L) + 1
-        l_nbr[4] = mod(site - L, N) + 1
-        dict[site + 1] = l_nbr[:]
+        nbr[site + 1, 1] = div(site, L) * L + mod(site + 1, L) + 1
+        nbr[site + 1, 2] = mod(site + L, N) + 1
+        nbr[site + 1, 3] = div(site, L) * L + mod(site - 1, L) + 1
+        nbr[site + 1, 4] = mod(site - L, N) + 1
     end
-    return dict
+    return nbr[:, :]
 end
 
 
@@ -25,7 +25,7 @@ end
 function ising_run(L :: Int,
                    beta :: Float64,
                    num_sweeps :: Int,
-                   nbr :: Dict{Int, Array})
+                   nbr :: Array{Int, 2})
     # initialize configuration S
     S = Array(Int8, L, L)
     fill!(S, 1)
@@ -39,7 +39,7 @@ function ising_run(L :: Int,
     for sweep = 1:num_sweeps
         for step = 1:N
             site = rand(1:N)
-            dE = 2 * S[site] * sum(S[nbr[site]])
+            dE = 2 * S[site] * sum(S[nbr[site, :]])
             if rand() < exp(- beta * dE)
                 S[site] = - S[site]
                 acc += 1
