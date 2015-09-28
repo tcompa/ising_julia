@@ -1,7 +1,7 @@
 # program:       ising_mc.jl
 # author:        tc
-# created:       2015-10-20 -- 8:30 CEST
-# last-modified: 2015-10-22 -- 18:30 CEST
+# created:       2015-08-20 -- 8:30 CEST
+# last-modified: 2015-08-22 -- 18:30 CEST
 # description:   implements a local Metropolis sampling for the two-dimensional
 #                Ising model
 
